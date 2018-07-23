@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.5.1.final utlizzo versione della libreria JasperReports6.5.1  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportAlloggi" language="groovy" pageWidth="595" pageHeight="841" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2cfa5ad0-b19b-423e-81bc-f03caca441d1">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportAlloggi" language="groovy" pageWidth="595" pageHeight="841" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" resourceBundle="Report" uuid="2cfa5ad0-b19b-423e-81bc-f03caca441d1">
 	<property name="ireport.zoom" value="1.3660269107301415"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="172"/>
@@ -16,13 +16,29 @@
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
 	<parameter name="LOGO" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["minilogo.png"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["logo.png"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="INTESTAZIONE1" class="java.lang.String"/>
-	<parameter name="INTESTAZIONE2" class="java.lang.String"/>
-	<parameter name="INTESTAZIONE3" class="java.lang.String"/>
-	<parameter name="IDBANDO" class="java.lang.Double" evaluationTime="Early"/>
-	<parameter name="IDGRADUATORIA" class="java.lang.Double" evaluationTime="Early"/>
+	<parameter name="INTESTAZIONE1" class="java.lang.String">
+		<defaultValueExpression><![CDATA["AZIENDA TERRITORIALE PER L’EDILIZIA RESIDENZIALE ...... ....... ....... ......."]]></defaultValueExpression>
+	</parameter>
+	<parameter name="INTESTAZIONE2" class="java.lang.String">
+		<defaultValueExpression><![CDATA["99999 FVG, Via xxxxx n. 00 - Tel. 04xx 999999 - Fax 04xx 999999"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="INTESTAZIONE3" class="java.lang.String">
+		<defaultValueExpression><![CDATA["e-mail: info@aterfvg.it - web: www.aterfvg.it"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IDBANDO" class="java.lang.Double" evaluationTime="Early">
+		<defaultValueExpression><![CDATA[DOUBLE_VALUE("2.0")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IDGRADUATORIA" class="java.lang.Double" evaluationTime="Early">
+		<defaultValueExpression><![CDATA[DOUBLE_VALUE("1.0")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="INTESTAZIONE4" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Luogo"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FOOTERSTAMPA" class="java.lang.String">
+		<defaultValueExpression><![CDATA["ATER FVG"]]></defaultValueExpression>
+	</parameter>
 	<queryString language="hql">
 		<![CDATA[Select grad.id.idBando as idBando,
 grad.id.idGraduatoria as idGraduatoria,
@@ -78,10 +94,6 @@ Order by anagrafica.cognomeRagione, anagrafica.nominativo, grad.punteggioTotale 
 	</background>
 	<title>
 		<band height="743" splitType="Stretch">
-			<image scaleImage="FillFrame" hAlign="Center">
-				<reportElement x="225" y="0" width="105" height="64" uuid="4c91eeca-f3f6-4458-a347-849cf6d7bf58"/>
-				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
-			</image>
 			<textField isBlankWhenNull="false">
 				<reportElement x="1" y="75" width="554" height="20" uuid="8511912c-b657-48dd-9b11-735087527ab6"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -207,8 +219,12 @@ Nel rispetto di quanto previsto dall’art. 7, comma 6, del Regolamento di esecu
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[( $F{dataPubblicazioneGrad} == null ? "" : " Udine,  " + DateFormat.getDateInstance(DateFormat.LONG).format($F{dataPubblicazioneGrad}) )]]></textFieldExpression>
+				<textFieldExpression><![CDATA[( $F{dataPubblicazioneGrad} == null ? "" : $P{INTESTAZIONE4} + ",  " + DateFormat.getDateInstance(DateFormat.LONG).format($F{dataPubblicazioneGrad}) )]]></textFieldExpression>
 			</textField>
+			<image scaleImage="RetainShape" hAlign="Center">
+				<reportElement x="225" y="0" width="105" height="64" uuid="6d4c8f4b-4311-4566-b155-c558db5d34b5"/>
+				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>
@@ -223,8 +239,8 @@ Nel rispetto di quanto previsto dall’art. 7, comma 6, del Regolamento di esecu
 ( $F{annoBando} == null ? "" : " / " + $F{annoBando} ) +
 ( $F{dataPubblicazione} == null ? "" : " del " + DateFormat.getDateInstance(DateFormat.LONG).format($F{dataPubblicazione}) + " - GRADUATORIA DEFINITIVA")]]></textFieldExpression>
 			</textField>
-			<image scaleImage="FillFrame" hAlign="Center">
-				<reportElement x="10" y="1" width="33" height="20" uuid="22383197-9122-4ed6-a623-6d9ca063a5a6"/>
+			<image scaleImage="RetainShape" hAlign="Center">
+				<reportElement x="10" y="1" width="33" height="20" uuid="61243839-6178-455c-b86b-28abbe41718a"/>
 				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
 			</image>
 		</band>
@@ -383,16 +399,24 @@ Nel rispetto di quanto previsto dall’art. 7, comma 6, del Regolamento di esecu
 	<pageFooter>
 		<band height="18" splitType="Stretch">
 			<textField>
-				<reportElement x="1" y="0" width="554" height="15" uuid="8e4f1f6d-0577-4c41-9c4d-9a55e8a4d31b"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<reportElement x="140" y="0" width="280" height="18" uuid="12877c4e-0d2c-4e4c-8202-a1ccddd4ae6e"/>
+				<textElement textAlignment="Center">
+					<font size="8" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{ReportName}+" "+$R{ReportVersion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="430" y="0" width="125" height="18" uuid="3ef58e71-549f-455a-8aad-860e6ee1778e"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Pagina "+$V{PagGrad}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Pagina " + ($V{PAGE_NUMBER}-1) + " di " + ($V{PAGE_NUMBER}-1)]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="1" y="0" width="100" height="18" uuid="18fb986d-09d8-41fc-9df0-27ab06cecf3a"/>
-				<text><![CDATA[ATER Udine]]></text>
-			</staticText>
+			<textField>
+				<reportElement x="0" y="0" width="130" height="18" uuid="578c78b3-1c34-402c-89f7-0777a956984e"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{FOOTERSTAMPA}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 </jasperReport>
