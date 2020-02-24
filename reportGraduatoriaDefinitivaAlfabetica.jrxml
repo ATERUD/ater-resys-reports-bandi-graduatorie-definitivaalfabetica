@@ -122,7 +122,10 @@ Order by anagrafica.cognomeRagione, anagrafica.nominativo, grad.punteggioTotale 
 ( $F{dataPubblicazione} == null ? "" : " del " + DateFormat.getDateInstance(DateFormat.LONG).format($F{dataPubblicazione}) )]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="1" y="289" width="554" height="51" uuid="0fa3fd85-6421-49a6-99bd-d0fec4bc153f"/>
+				<reportElement x="1" y="273" width="554" height="90" uuid="0fa3fd85-6421-49a6-99bd-d0fec4bc153f">
+					<property name="com.jaspersoft.studio.unit.y" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.height" value="mm"/>
+				</reportElement>
 				<textElement textAlignment="Center">
 					<font size="16" isBold="true"/>
 				</textElement>
@@ -132,14 +135,18 @@ Order by anagrafica.cognomeRagione, anagrafica.nominativo, grad.punteggioTotale 
 				<reportElement x="0" y="742" width="100" height="1" uuid="f11f75d3-7f25-4e3a-a460-4b274806bbc1"/>
 			</break>
 			<staticText>
-				<reportElement x="1" y="245" width="554" height="40" uuid="7e402ee6-55a1-489b-b482-75e20335e457"/>
+				<reportElement x="1" y="245" width="554" height="28" uuid="7e402ee6-55a1-489b-b482-75e20335e457">
+					<property name="com.jaspersoft.studio.unit.height" value="mm"/>
+				</reportElement>
 				<textElement textAlignment="Center">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[per l'assegnazione in locazione di alloggi di edilizia residenziale pubblica sovvenzionata siti nel Comune o nei Comuni di]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="350" width="554" height="18" uuid="1df24865-41af-42d6-8825-443dbcf8d975"/>
+				<reportElement x="1" y="366" width="554" height="18" uuid="1df24865-41af-42d6-8825-443dbcf8d975">
+					<property name="com.jaspersoft.studio.unit.y" value="mm"/>
+				</reportElement>
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true"/>
 				</textElement>
