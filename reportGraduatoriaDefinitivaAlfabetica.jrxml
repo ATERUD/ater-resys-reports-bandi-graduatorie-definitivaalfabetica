@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.5.1.final utlizzo versione della libreria JasperReports6.5.1  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportAlloggi" language="groovy" pageWidth="595" pageHeight="841" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" resourceBundle="Report" uuid="2cfa5ad0-b19b-423e-81bc-f03caca441d1">
+<!-- Created with Jaspersoft Studio version 6.21.0.final utlizzo versione della libreria JasperReports6.21.0-4f56c4f36cd19e17675219a9ac4692d5f0f13b06  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportAlloggi" language="groovy" pageWidth="595" pageHeight="841" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2cfa5ad0-b19b-423e-81bc-f03caca441d1">
 	<property name="ireport.zoom" value="1.3660269107301415"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="172"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="AterUDBandi.xml"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ReSysWeb"/>
 	<style name="Default" isDefault="true" fontName="ATER Fonts - Arimo"/>
 	<style name="MultiLineBackGround" style="Default">
 		<conditionalStyle>
@@ -18,26 +18,26 @@
 	<parameter name="LOGO" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["logo.png"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="INTESTAZIONE1" class="java.lang.String">
-		<defaultValueExpression><![CDATA["AZIENDA TERRITORIALE PER L’EDILIZIA RESIDENZIALE ...... ....... ....... ......."]]></defaultValueExpression>
-	</parameter>
-	<parameter name="INTESTAZIONE2" class="java.lang.String">
-		<defaultValueExpression><![CDATA["99999 FVG, Via xxxxx n. 00 - Tel. 04xx 999999 - Fax 04xx 999999"]]></defaultValueExpression>
-	</parameter>
-	<parameter name="INTESTAZIONE3" class="java.lang.String">
-		<defaultValueExpression><![CDATA["e-mail: info@aterfvg.it - web: www.aterfvg.it"]]></defaultValueExpression>
-	</parameter>
 	<parameter name="IDBANDO" class="java.lang.Double" evaluationTime="Early">
 		<defaultValueExpression><![CDATA[DOUBLE_VALUE("2.0")]]></defaultValueExpression>
 	</parameter>
 	<parameter name="IDGRADUATORIA" class="java.lang.Double" evaluationTime="Early">
 		<defaultValueExpression><![CDATA[DOUBLE_VALUE("1.0")]]></defaultValueExpression>
 	</parameter>
-	<parameter name="INTESTAZIONE4" class="java.lang.String">
-		<defaultValueExpression><![CDATA["Luogo"]]></defaultValueExpression>
+	<parameter name="INTESTAZIONE1" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["AZIENDA TERRITORIALE PER L’EDILIZIA RESIDENZIALE DI UDINE"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="FOOTERSTAMPA" class="java.lang.String">
-		<defaultValueExpression><![CDATA["ATER FVG"]]></defaultValueExpression>
+	<parameter name="INTESTAZIONE2" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["33100 Udine, Via Sacile n. 15 – Tel. 0432 491111"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="INTESTAZIONE3" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["e-mail: info@ater-udine.it - web: ater-udine.it"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="INTESTAZIONE4" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["Udine"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FOOTERSTAMPA" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["ATER di Udine"]]></defaultValueExpression>
 	</parameter>
 	<queryString language="hql">
 		<![CDATA[Select grad.id.idBando as idBando,
@@ -58,13 +58,17 @@ g.dataPubblicazione as dataPubblicazioneGrad,
 b.annoBando as annoBando,
 b.numeroBando as numeroBando,
 b.dataPubblicazione as dataPubblicazione,
-b.oggetto as oggetto
-From GraduatoriaPunteggio grad, Graduatoria g, Anagrafiche anagrafica, Bandi b
-Where grad.codiceAnagrafica = anagrafica.codice
-And b.idBando = grad.id.idBando
-And g.id.idBando = grad.id.idBando
-And g.id.idGraduatoria = grad.id.idGraduatoria
-And ( $P{IDBANDO} is null Or $P{IDBANDO} < 1.0 Or $P{IDBANDO} = grad.id.idBando )
+b.oggetto as oggetto,
+domanda.numeroProtocollo as numeroProtocollo,
+domanda.annoProtocollo as annoProtocollo,
+domanda.numeroProtocollo as numeroProtocollo,
+domanda.annoProtocollo as annoProtocollo
+From GraduatoriaPunteggio grad
+left join grad.domanda domanda
+left join grad.graduatoria g
+left join g.bandoGenerale b
+left join domanda.anagrafica anagrafica
+Where   ( $P{IDBANDO} is null Or $P{IDBANDO} < 1.0 Or $P{IDBANDO} = grad.id.idBando )
 And ( $P{IDGRADUATORIA} is null Or $P{IDGRADUATORIA} < 1.0 Or $P{IDGRADUATORIA} = grad.id.idGraduatoria )
 Order by anagrafica.cognomeRagione, anagrafica.nominativo, grad.punteggioTotale DESC]]>
 	</queryString>
@@ -86,6 +90,8 @@ Order by anagrafica.cognomeRagione, anagrafica.nominativo, grad.punteggioTotale 
 	<field name="dataPubblicazione" class="java.util.Date"/>
 	<field name="oggetto" class="java.lang.String"/>
 	<field name="dataPubblicazioneGrad" class="java.sql.Date"/>
+	<field name="numeroProtocollo" class="java.lang.String"/>
+	<field name="annoProtocollo" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -112,7 +118,7 @@ Order by anagrafica.cognomeRagione, anagrafica.nominativo, grad.punteggioTotale 
 				</textElement>
 				<textFieldExpression><![CDATA[$P{INTESTAZIONE3}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="1" y="215" width="554" height="18" uuid="9ce792e4-7d1b-48e0-ba88-b972edb4101a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
@@ -218,14 +224,14 @@ Nel rispetto di quanto previsto dall’art. 7, comma 6, del Regolamento di esecu
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subCommissione.jasper"]]></subreportExpression>
 			</subreport>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="1" y="657" width="554" height="18" uuid="6b808a7f-db15-4ed7-887d-5611b7f16724"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[( $F{dataPubblicazioneGrad} == null ? "" : $P{INTESTAZIONE4} + ",  " + DateFormat.getDateInstance(DateFormat.LONG).format($F{dataPubblicazioneGrad}) )]]></textFieldExpression>
 			</textField>
-			<image scaleImage="RetainShape" hAlign="Center">
+			<image scaleImage="RetainShape" hAlign="Center" onErrorType="Blank">
 				<reportElement x="225" y="0" width="105" height="64" uuid="6d4c8f4b-4311-4566-b155-c558db5d34b5"/>
 				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
 			</image>
@@ -234,7 +240,7 @@ Nel rispetto di quanto previsto dall’art. 7, comma 6, del Regolamento di esecu
 	<pageHeader>
 		<band height="23">
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement positionType="Float" x="0" y="0" width="555" height="17" uuid="a6993fb0-2e9f-4390-aa84-458986b8f897"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
@@ -252,13 +258,16 @@ Nel rispetto di quanto previsto dall’art. 7, comma 6, del Regolamento di esecu
 	<columnHeader>
 		<band height="17">
 			<staticText>
-				<reportElement mode="Opaque" x="193" y="0" width="192" height="17" backcolor="#E0E0E0" uuid="7335a7f9-2b30-4a63-b480-eb8b6f314691"/>
+				<reportElement mode="Opaque" x="151" y="0" width="150" height="17" backcolor="#E0E0E0" uuid="7335a7f9-2b30-4a63-b480-eb8b6f314691">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
 				<box>
 					<pen lineWidth="0.75" lineColor="#CCCCCC"/>
-					<topPen lineWidth="0.75" lineColor="#CCCCCC"/>
-					<leftPen lineWidth="0.75" lineColor="#CCCCCC"/>
-					<bottomPen lineWidth="0.75" lineColor="#CCCCCC"/>
-					<rightPen lineWidth="0.75" lineColor="#CCCCCC"/>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9"/>
@@ -266,13 +275,15 @@ Nel rispetto di quanto previsto dall’art. 7, comma 6, del Regolamento di esecu
 				<text><![CDATA[Nome]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="385" y="0" width="50" height="17" backcolor="#E0E0E0" uuid="c5220485-1cde-49d3-b5b2-21ef75e6b285"/>
+				<reportElement mode="Opaque" x="384" y="0" width="50" height="17" backcolor="#E0E0E0" uuid="c5220485-1cde-49d3-b5b2-21ef75e6b285">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
 				<box>
 					<pen lineWidth="0.75" lineColor="#CCCCCC"/>
-					<topPen lineWidth="0.75" lineColor="#CCCCCC"/>
-					<leftPen lineWidth="0.75" lineColor="#CCCCCC"/>
-					<bottomPen lineWidth="0.75" lineColor="#CCCCCC"/>
-					<rightPen lineWidth="0.75" lineColor="#CCCCCC"/>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9"/>
@@ -280,13 +291,15 @@ Nel rispetto di quanto previsto dall’art. 7, comma 6, del Regolamento di esecu
 				<text><![CDATA[Posizione]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="485" y="0" width="70" height="17" backcolor="#E0E0E0" uuid="3558d143-510f-4706-9680-d6cb9f2944d8"/>
+				<reportElement mode="Opaque" x="484" y="0" width="70" height="17" backcolor="#E0E0E0" uuid="3558d143-510f-4706-9680-d6cb9f2944d8">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
 				<box>
 					<pen lineWidth="0.75" lineColor="#CCCCCC"/>
-					<topPen lineWidth="0.75" lineColor="#CCCCCC"/>
-					<leftPen lineWidth="0.75" lineColor="#CCCCCC"/>
-					<bottomPen lineWidth="0.75" lineColor="#CCCCCC"/>
-					<rightPen lineWidth="0.75" lineColor="#CCCCCC"/>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9"/>
@@ -294,13 +307,15 @@ Nel rispetto di quanto previsto dall’art. 7, comma 6, del Regolamento di esecu
 				<text><![CDATA[Stato]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="435" y="0" width="50" height="17" backcolor="#E0E0E0" uuid="7c070c35-27f0-480e-91bc-00c46ead3b05"/>
+				<reportElement mode="Opaque" x="434" y="0" width="50" height="17" backcolor="#E0E0E0" uuid="7c070c35-27f0-480e-91bc-00c46ead3b05">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
 				<box>
 					<pen lineWidth="0.75" lineColor="#CCCCCC"/>
-					<topPen lineWidth="0.75" lineColor="#CCCCCC"/>
-					<leftPen lineWidth="0.75" lineColor="#CCCCCC"/>
-					<bottomPen lineWidth="0.75" lineColor="#CCCCCC"/>
-					<rightPen lineWidth="0.75" lineColor="#CCCCCC"/>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9"/>
@@ -308,31 +323,52 @@ Nel rispetto di quanto previsto dall’art. 7, comma 6, del Regolamento di esecu
 				<text><![CDATA[Punteggio]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="1" y="0" width="192" height="17" backcolor="#E0E0E0" uuid="8af38c1a-1bca-4d28-acd7-6b7c9bda0bd7"/>
+				<reportElement mode="Opaque" x="1" y="0" width="150" height="17" backcolor="#E0E0E0" uuid="8af38c1a-1bca-4d28-acd7-6b7c9bda0bd7">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
 				<box>
 					<pen lineWidth="0.75" lineColor="#CCCCCC"/>
-					<topPen lineWidth="0.75" lineColor="#CCCCCC"/>
-					<leftPen lineWidth="0.75" lineColor="#CCCCCC"/>
-					<bottomPen lineWidth="0.75" lineColor="#CCCCCC"/>
-					<rightPen lineWidth="0.75" lineColor="#CCCCCC"/>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
 				<text><![CDATA[Cognome]]></text>
 			</staticText>
+			<staticText>
+				<reportElement key="" style="MultiLineBackGround" mode="Opaque" x="301" y="0" width="83" height="17" backcolor="#E0E0E0" uuid="8a447723-3034-4db0-98d7-c2ac7b9348fd">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75" lineColor="#CCCCCC"/>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Protocollo]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="17" splitType="Stretch">
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="MultiLineBackGround" positionType="Float" stretchType="RelativeToTallestObject" x="385" y="0" width="50" height="17" uuid="4736caf2-27b5-499d-849a-7c232b9245bc"/>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement style="MultiLineBackGround" positionType="Float" stretchType="RelativeToTallestObject" x="384" y="0" width="50" height="17" uuid="4736caf2-27b5-499d-849a-7c232b9245bc">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
 				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
 					<pen lineColor="#CCCCCC"/>
-					<topPen lineWidth="0.25" lineColor="#CCCCCC"/>
-					<leftPen lineWidth="0.25" lineColor="#CCCCCC"/>
-					<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
-					<rightPen lineWidth="0.25" lineColor="#CCCCCC"/>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
 				</box>
 				<textElement textAlignment="Center">
 					<font size="9"/>
@@ -343,28 +379,32 @@ Nel rispetto di quanto previsto dall’art. 7, comma 6, del Regolamento di esecu
 ( ( ( $F{sorteggiato} == null || $F{sorteggiato} == 0 ) &&
     $F{daSorteggiare} == 1 ) ? "***" : $F{posizioneGraduatoria} )]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="MultiLineBackGround" positionType="Float" stretchType="RelativeToTallestObject" x="485" y="0" width="70" height="17" uuid="c84a6db2-830d-4f08-af60-4adefd300b51"/>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement style="MultiLineBackGround" positionType="Float" stretchType="RelativeToTallestObject" x="484" y="0" width="70" height="17" uuid="c84a6db2-830d-4f08-af60-4adefd300b51">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
 				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
 					<pen lineColor="#CCCCCC"/>
-					<topPen lineWidth="0.25" lineColor="#CCCCCC"/>
-					<leftPen lineWidth="0.25" lineColor="#CCCCCC"/>
-					<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
-					<rightPen lineWidth="0.25" lineColor="#CCCCCC"/>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
 				</box>
 				<textElement>
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{stato}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="##0.00  " isBlankWhenNull="true">
-				<reportElement style="MultiLineBackGround" positionType="Float" stretchType="RelativeToTallestObject" x="435" y="0" width="50" height="17" uuid="add127c6-1a24-488a-bb20-b8c10969cb4b"/>
+			<textField textAdjust="StretchHeight" pattern="##0.00  " isBlankWhenNull="true">
+				<reportElement style="MultiLineBackGround" positionType="Float" stretchType="RelativeToTallestObject" x="434" y="0" width="50" height="17" uuid="add127c6-1a24-488a-bb20-b8c10969cb4b">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
 				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
 					<pen lineColor="#CCCCCC"/>
-					<topPen lineWidth="0.25" lineColor="#CCCCCC"/>
-					<leftPen lineWidth="0.25" lineColor="#CCCCCC"/>
-					<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
-					<rightPen lineWidth="0.25" lineColor="#CCCCCC"/>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
 				</box>
 				<textElement textAlignment="Center">
 					<font size="9"/>
@@ -373,27 +413,49 @@ Nel rispetto di quanto previsto dall’art. 7, comma 6, del Regolamento di esecu
 ( $F{stato}.toUpperCase( ).indexOf( "ESCLUS" ) > -1 ||
   $F{stato}.toUpperCase( ).indexOf( "ANNUL" ) > -1 ) ) ? "---" : $F{punteggioTotale}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="MultiLineBackGround" stretchType="RelativeToTallestObject" x="193" y="0" width="192" height="17" uuid="09fe679f-5ec0-4899-bb9b-dcf8c5ad7d64"/>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement style="MultiLineBackGround" stretchType="RelativeToTallestObject" x="151" y="0" width="150" height="17" uuid="09fe679f-5ec0-4899-bb9b-dcf8c5ad7d64">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
 				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
 					<pen lineColor="#CCCCCC"/>
-					<topPen lineWidth="0.25" lineColor="#CCCCCC"/>
-					<leftPen lineWidth="0.25" lineColor="#CCCCCC"/>
-					<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
-					<rightPen lineWidth="0.25" lineColor="#CCCCCC"/>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
 				</box>
 				<textFieldExpression><![CDATA[$F{nominativo}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="MultiLineBackGround" stretchType="RelativeToTallestObject" x="1" y="0" width="192" height="17" uuid="f7615e4c-0bde-4cc4-bf71-dccfab9040d2"/>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement style="MultiLineBackGround" stretchType="RelativeToTallestObject" x="1" y="0" width="150" height="17" uuid="f7615e4c-0bde-4cc4-bf71-dccfab9040d2">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
 				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
 					<pen lineColor="#CCCCCC"/>
-					<topPen lineWidth="0.25" lineColor="#CCCCCC"/>
-					<leftPen lineWidth="0.25" lineColor="#CCCCCC"/>
-					<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
-					<rightPen lineWidth="0.25" lineColor="#CCCCCC"/>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
 				</box>
 				<textFieldExpression><![CDATA[$F{cognomeRagione}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement key="" style="MultiLineBackGround" stretchType="RelativeToTallestObject" x="301" y="0" width="83" height="17" uuid="89345833-4468-4aca-9c9b-3820fd48de57">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
+					<pen lineColor="#CCCCCC"/>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numeroProtocollo}+"/"+$F{annoProtocollo}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
