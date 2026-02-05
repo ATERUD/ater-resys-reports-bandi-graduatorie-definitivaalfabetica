@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.21.0.final utlizzo versione della libreria JasperReports6.21.0-4f56c4f36cd19e17675219a9ac4692d5f0f13b06  -->
+<!-- Created with Jaspersoft Studio version 6.13.0.final utlizzo versione della libreria JasperReports6.13.0-46ada4d1be8f3c5985fd0b6146f3ed44caed6f05  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportAlloggi" language="groovy" pageWidth="595" pageHeight="841" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2cfa5ad0-b19b-423e-81bc-f03caca441d1">
 	<property name="ireport.zoom" value="1.3660269107301415"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="172"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ReSysWeb"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapterInsiel"/>
 	<style name="Default" isDefault="true" fontName="ATER Fonts - Arimo"/>
 	<style name="MultiLineBackGround" style="Default">
 		<conditionalStyle>
@@ -50,8 +50,8 @@ grad.stato as stato,
 grad.codiceAnagrafica as codiceAnagrafica,
 grad.sorteggiato as sorteggiato,
 grad.daSorteggiare as daSorteggiare,
-anagrafica.cognomeRagione as cognomeRagione,
-anagrafica.nominativo as nominativo,
+UPPER(anagrafica.cognomeRagione) as cognomeRagione,
+UPPER(anagrafica.nominativo) as nominativo,
 anagrafica.dataNascita as dataNascita,
 g.descrizione as descrizione,
 g.dataPubblicazione as dataPubblicazioneGrad,
@@ -70,7 +70,7 @@ left join g.bandoGenerale b
 left join domanda.anagrafica anagrafica
 Where   ( $P{IDBANDO} is null Or $P{IDBANDO} < 1.0 Or $P{IDBANDO} = grad.id.idBando )
 And ( $P{IDGRADUATORIA} is null Or $P{IDGRADUATORIA} < 1.0 Or $P{IDGRADUATORIA} = grad.id.idGraduatoria )
-Order by anagrafica.cognomeRagione, anagrafica.nominativo, grad.punteggioTotale DESC]]>
+Order by UPPER(anagrafica.cognomeRagione), UPPER(anagrafica.nominativo), grad.punteggioTotale DESC]]>
 	</queryString>
 	<field name="idBando" class="java.lang.Double"/>
 	<field name="idGraduatoria" class="java.lang.Double"/>
